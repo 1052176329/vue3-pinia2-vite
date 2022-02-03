@@ -8,40 +8,25 @@
       </div>
       <div class="menus">
         <el-menu
-        default-active="2"
-        :collapse="coller"
-        class="el-menu-vertical-demo"
-      >
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
-          </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item one</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
+          default-active="1"
+          :collapse="coller"
+          class="el-menu-vertical-demo"
+          @select="selectMenuChange"
+        >
+          <el-menu-item index="1">
+            <el-icon><setting /></el-icon>
+            <span>控制面板</span>
+          </el-menu-item>
+          <el-sub-menu index="2">
+            <template #title>
+              <el-icon><user-filled /></el-icon>
+              <span>用户管理</span>
+            </template>
+            <el-menu-item index="2-1">
+              <span>控制面板</span>
+            </el-menu-item>
           </el-sub-menu>
-        </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon><document /></el-icon>
-          <span>Navigator Three</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
-        </el-menu-item>
-      </el-menu>
+        </el-menu>
       </div>
     </el-aside>
     <el-container class="right-wrapper">
@@ -61,10 +46,10 @@
         <div class="header-right">
           <div class="avatar cursor-pointer">
             <el-dropdown trigger="click">
-               <el-avatar
-              :size="50"
-              :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
-            ></el-avatar>
+              <el-avatar
+                :size="50"
+                :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
+              ></el-avatar>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>修改密码 </el-dropdown-item>
@@ -72,28 +57,51 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-           
           </div>
         </div>
       </el-header>
-      <el-main class="right-main">Main</el-main>
+      <el-main class="right-main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script lang="ts" setup="setup">
 import { computed, ref } from "vue";
-import { Location, Setting, Document} from '@element-plus/icons-vue'
+import {
+  Location,
+  Setting,
+  Document,
+  User as UserFilled,
+} from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
+// useRouter 相当于$router
+const route = useRouter();
+
 const asideWidth = ref("200px");
+
 console.log(asideWidth.value);
 // 首页helle 收缩点击
 const asideWidthChange = () => {
   asideWidth.value = asideWidth.value === "200px" ? "60px" : "200px";
 };
 // 点击hello，菜单回收
-const coller = computed(()=>{
-  return asideWidth.value !== '200px'
-})
+const coller = computed(() => {
+  return asideWidth.value !== "200px";
+});
+// 点击菜单判断跳转
+const selectMenuChange = (index: any) => {
+  console.log(index)
+  switch (index) {
+    case "1":
+      console.log("1", index);
+      route.push({ name: "Dashboard" });
+      break;
+    case '2-1':
+      route.push({name: 'UserList'})
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,16 +112,16 @@ const coller = computed(()=>{
 .left-aside {
   height: 100%;
   background: #999;
-  .logo{
+  .logo {
     @apply text-center h-10 select-none;
-    .text{
+    .text {
       @apply text-center text-lg font-bold h-10 py-2 px-4 bg-black text-white;
     }
   }
-  .menus{
+  .menus {
     height: calc(100% - 2.5rem);
     overflow-y: auto;
-    overflow-x: hidden
+    overflow-x: hidden;
   }
 }
 .right-wrapper {
@@ -123,7 +131,7 @@ const coller = computed(()=>{
   @apply bg-indigo-200 flex items-center justify-between;
 }
 .right-main {
-  background: green;
+  background: #fff;
 }
 .header-wrapper {
 }
