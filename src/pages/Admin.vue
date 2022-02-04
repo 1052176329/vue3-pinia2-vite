@@ -45,15 +45,15 @@
         </div>
         <div class="header-right">
           <div class="avatar cursor-pointer">
-            <el-dropdown trigger="click">
+            <el-dropdown trigger="click" @command="handleClick">
               <el-avatar
                 :size="50"
                 :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
               ></el-avatar>
               <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>修改密码 </el-dropdown-item>
-                  <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-menu >
+                  <el-dropdown-item command="edit-pass">修改密码 </el-dropdown-item>
+                  <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -76,6 +76,7 @@ import {
   User as UserFilled,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
+import router from "../router";
 // useRouter 相当于$router
 const route = useRouter();
 
@@ -102,6 +103,18 @@ const selectMenuChange = (index: any) => {
       route.push({name: 'UserList'})
   }
 };
+// 点击下拉
+const handleClick = (index: any)=> {
+  console.log(index)
+  switch(index){
+    case 'edit-pass':
+      console.log('修改密码')
+      break;
+    case 'loginOut':
+      console.log('退出登录')
+      router.push({path: '/login'})
+  }
+}
 </script>
 
 <style lang="scss" scoped>

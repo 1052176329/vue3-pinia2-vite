@@ -4,6 +4,7 @@ import router from './router'
 import { createPinia } from 'pinia'
 
 import './assets/styles/index.scss'
+import 'element-plus/dist/index.css';
 
 const pinia = createPinia()
 

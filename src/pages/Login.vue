@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { reactive } from "@vue/reactivity";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import router from "../router";
+import { ElMessage } from "element-plus";
 
 // 定义参数名称
 const userInfo = reactive({
@@ -11,13 +14,21 @@ const rules = {
   username: [{ required: "true", message: "账号不能为空", tigger: "blur" }],
   password: [{ required: "true", message: "密码不能为空", tigger: "blur" }],
 };
+// const router = useRouter()
 const formEl = ref<HTMLFormElement | null>();
 const handleSubmit = (e: Event) => {
   e.preventDefault();
-  console.log(formEl.value);
-  console.log(formEl.value!);
+
   formEl.value!.validate().then((res: any) => {
     console.log(res);
+    if (res) {
+      console.log("1111");
+      ElMessage.success("登陆成功");
+      router.push({name: 'Dashboard'})
+    } else {
+      console.log("2222");
+      ElMessage.error("登陆失败");
+    }
   });
 };
 </script>
